@@ -1,0 +1,32 @@
+workflows:
+  ci:
+    name: CI
+    instance_type: mac_mini
+    # Setting the timeout for a build to 15 minutes.
+    max_build_duration: 15
+    environment:
+      # Using the latest Flutter version.
+      flutter: stable
+    # This workflow should trigger when a new pull request opens or updates.
+    triggering:
+      events:
+        - pull_request
+    scripts:
+      - name: Add Dart SDK to PATH
+         script: |
+           echo PATH="$PATH":"$FLUTTER_ROOT/.pub-cache/bin" >> $CM_ENV
+           echo PATH="$PATH":"$FLUTTER_ROOT/bin" >> $CM_ENV           
+      
+      - name: Melos Bootstrap
+         script: |
+           dart pub global activate melos
+           melos bootstrap   
+           
+      - name: Run Analyze
+         script: melos run analyze
+
+      - name: Run Format
+         script: melos run format
+
+      - name: Run Tests
+         script: melos run test        

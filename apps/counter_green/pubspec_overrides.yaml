@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: counter_view
+dependency_overrides:
+  counter_view:
+    path: ../../packages/counter_view
